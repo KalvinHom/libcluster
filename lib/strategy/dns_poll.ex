@@ -108,8 +108,12 @@ defmodule Cluster.Strategy.DNSPoll do
     resolver =
       Keyword.get(config, :resolver, fn query ->
         query
+        |>IO.inspect()
         |> String.to_charlist()
+        |>IO.inspect()
         |> :inet_res.lookup(:in, :a)
+        |>IO.inspect()
+
       end)
 
     resolve(query, node_basename, resolver, state)
@@ -125,8 +129,12 @@ defmodule Cluster.Strategy.DNSPoll do
 
     query
     |> resolver.()
+    |>IO.inspect()
     |> Enum.map(&format_node(&1, node_basename))
+    |>IO.inspect()
     |> Enum.reject(fn n -> n == me end)
+    |>IO.inspect()
+
   end
 
   defp resolve({:ok, invalid_query}, {:ok, invalid_basename}, _resolver, %State{
